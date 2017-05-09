@@ -18,20 +18,27 @@ RUN apt-get update && \
 USER $NB_USER
 
 # R packages
-RUN conda config --add channels r && \
-    conda install --quiet --yes \
+
+RUN conda config --add channels r
+RUN conda config --add channels bioconda
+
+RUN conda install --quiet --yes \
     'r-base=3.3.2' \
     'r-irkernel=0.7*' \
     'r-plyr=1.8*' \
     'r-devtools=1.12*' \
-    'r-tidyverse=1.0*' \
     'r-shiny=0.14*' \
     'r-rmarkdown=1.2*' \
-    'r-forecast=7.3*' \
     'r-rsqlite=1.1*' \
     'r-reshape2=1.4*' \
     'r-nycflights13=0.2*' \
     'r-caret=6.0*' \
     'r-rcurl=1.95*' \
-    'r-crayon=1.3*' \
-    'r-randomforest=4.6*' && conda clean -tipsy
+    'r-crayon=1.3*' && conda clean -tipsy
+    
+RUN echo "source('http://bioconductor.org/biocLite.R'); biocLite('limma')" | R --vanilla
+RUN echo "source('http://bioconductor.org/biocLite.R'); biocLite('AnnotationDbi')" | R --vanilla
+RUN echo "source('http://bioconductor.org/biocLite.R'); biocLite('samr')" | R --vanilla
+RUN echo "source('http://bioconductor.org/biocLite.R'); biocLite('hugene20stprobeset.db')" | R --vanilla
+RUN echo "source('http://bioconductor.org/biocLite.R'); biocLite('hgu133plus2.db')" | R --vanilla
+
